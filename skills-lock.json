@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "skills": {
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "commit": "e4bb5d960d87126ff3b3a8af1a104b7db67560ba",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "83485963700bcf11d5bf78118facb301676b69d918fee2e45a95e7f1a2840f6c"
+    },
+    "image-enhancer": {
+      "source": "ComposioHQ/awesome-claude-skills",
+      "commit": "be2a406907dbc61b73e6827ded415c96139d13a2",
+      "sourceType": "github",
+      "skillPath": "image-enhancer/SKILL.md",
+      "computedHash": "e9b9a4135c41b1d5925245710308e8a6b58312e0f21b18c3bf650cf5c69852da"
+    }
+  }
+}
