@@ -96,3 +96,20 @@ test("keyboard focus is visible on links", async ({ page }) => {
   const outline = await page.evaluate(() => getComputedStyle(document.activeElement!).outlineStyle);
   expect(outline).toBe("solid");
 });
+
+test("nav marks the current page and Escape closes the About menu", async ({ page }) => {
+  await page.goto("/news/");
+  await expect(page.getByRole("link", { name: "News and Alerts" })).toHaveAttribute("aria-current", "page");
+  await page.getByRole("button", { name: "About" }).click();
+  await expect(page.locator(".dropdown-menu")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".dropdown-menu")).toHaveCount(0);
+});
+
+test("hero portrait is framed and sharp, not stretched full-bleed", async ({ page }) => {
+  await page.goto("/");
+  const niche = page.locator(".hero-niche img");
+  await expect(niche).toBeVisible();
+  const { naturalWidth, width } = await niche.evaluate((i: HTMLImageElement) => ({ naturalWidth: i.naturalWidth, width: i.clientWidth }));
+  expect(naturalWidth).toBeGreaterThanOrEqual(width);
+});

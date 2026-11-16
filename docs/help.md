@@ -32,7 +32,11 @@ cd ../test && npm install && npx playwright install chromium && npx playwright t
 ```
 The E2E run starts its own server with a fresh SQLite database.
 
+## Design notes
+Palette: palm-leaf paper, kumkum red (actions), marigold, Tungabhadra green (news), black-stone footer; all text pairs 6:1 or better. Fonts (Marcellus headings, Hind body) are bundled with `@fontsource`, no runtime Google call. Hero portrait sits in an arched temple-niche frame; shrine cards stack like folios and the top card leaves first. Tokens live at the top of `frontend/app/globals.css`.
+
 ## Lessons learnt
+- `ui-ux-pro-max` design-system search returned off-brief results (blue SaaS, purple "church") for a temple; use its UX checklists, pick palette and type from the subject.
 - `pkill -f <pattern>` can match your own shell command line and kill it. Use `pkill -f "[u]vicorn ..."`.
 - A scroll-driven card is "visible" to CSS long before it is on screen; E2E checks must test the bounding box, not just `visibility`.
 - Lazy-loaded images report `naturalWidth` 0 until scrolled into view; force `loading=eager` before checking for broken images.

@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import AlertBanner from "@/components/AlertBanner";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import "@fontsource/marcellus";
+import "@fontsource/hind/400.css";
+import "@fontsource/hind/500.css";
+import "@fontsource/hind/600.css";
+import "@fontsource/hind/700.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

@@ -14,14 +14,29 @@ const clamp = (value: number) => Math.min(1, Math.max(0, value));
 export const cascadeLength = (count: number) =>
   (count - 1) * CARD_STEP + 1 + (count - 1) * EXIT_STEP + EXIT_LENGTH;
 
+const STACK_PEEK_PX = 14;     // how far each folio underneath peeks out above the one on top
+const STACK_PEEK_LEVELS = 3;  // folios that peek before the rest hide completely
+
+const riseOf = (index: number, progress: number) => clamp(progress - index * CARD_STEP);
+
+/** The top card leaves first, revealing the stack beneath it. */
+const leaveOf = (index: number, count: number, progress: number) => {
+  const exitStart = (count - 1) * CARD_STEP + 1 + (count - 1 - index) * EXIT_STEP;
+  return clamp((progress - exitStart) / EXIT_LENGTH);
+};
+
 /** Card transform for scroll position `progress` (in viewports from section top). */
 export function cardStyle(index: number, count: number, progress: number) {
-  const rise = clamp((progress - index * CARD_STEP) / 1);
-  const exitStart = (count - 1) * CARD_STEP + 1 + index * EXIT_STEP;
-  const leave = clamp((progress - exitStart) / EXIT_LENGTH);
+  const rise = riseOf(index, progress);
+  const leave = leaveOf(index, count, progress);
+  let covered = 0;
+  for (let later = index + 1; later < count; later++) {
+    covered += riseOf(later, progress) * (1 - leaveOf(later, count, progress));
+  }
+  const depth = Math.min(covered, STACK_PEEK_LEVELS);
   const offset = (1 - rise) * 110 - leave * 120;
   return {
-    transform: `translateY(${offset}vh) scale(${1 - (1 - rise) * 0.04})`,
+    transform: `translateY(calc(${offset}vh - ${depth * STACK_PEEK_PX}px)) scale(${1 - (1 - rise) * 0.04 - depth * 0.015})`,
     opacity: rise === 0 ? 0 : 1 - leave,
     visibility: rise === 0 || leave === 1 ? ("hidden" as const) : ("visible" as const),
     zIndex: index + 1,
@@ -48,7 +63,9 @@ export default function ShrineCascade() {
   const { data, error } = useApi<Shrine[]>("/shrines");
   const sectionRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -60,14 +77,17 @@ export default function ShrineCascade() {
 
   useEffect(() => {
     if (reducedMotion) return;
-    const onScroll = () => {
-      const top = sectionRef.current?.getBoundingClientRect().top ?? 0;
-      setProgress(-top / window.innerHeight);
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      setProgress(-(sectionRef.current?.getBoundingClientRect().top ?? 0) / window.innerHeight);
     };
-    onScroll();
+    const onScroll = () => { frame ||= requestAnimationFrame(measure); };
+    measure();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
+      cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };

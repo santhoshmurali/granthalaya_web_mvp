@@ -1,6 +1,7 @@
 "use client";
 import { ChevronDown, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const ABOUT_LINKS = [
@@ -13,6 +14,8 @@ const ABOUT_LINKS = [
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const pathname = usePathname();
+  const current = (href: string) => (pathname === href ? "page" : undefined);
   const close = () => { setMenuOpen(false); setAboutOpen(false); };
 
   return (
@@ -25,22 +28,23 @@ export default function Header() {
                 onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
-        <nav className={menuOpen ? "nav nav-open" : "nav"} aria-label="Main">
-          <Link href="/" onClick={close}>Home</Link>
+        <nav className={menuOpen ? "nav nav-open" : "nav"} aria-label="Main"
+             onKeyDown={(e) => e.key === "Escape" && setAboutOpen(false)}>
+          <Link href="/" aria-current={current("/")} onClick={close}>Home</Link>
           <div className="dropdown" onMouseLeave={() => setAboutOpen(false)}>
-            <button className="dropdown-button" aria-expanded={aboutOpen} aria-haspopup="true"
+            <button className="dropdown-button" data-active={pathname.startsWith("/about")} aria-expanded={aboutOpen} aria-haspopup="true"
                     onClick={() => setAboutOpen(!aboutOpen)} onMouseEnter={() => setAboutOpen(true)}>
               About <ChevronDown size={16} aria-hidden />
             </button>
             {aboutOpen && (
               <div className="dropdown-menu">
                 {ABOUT_LINKS.map((link) => (
-                  <Link key={link.href} href={link.href} onClick={close}>{link.label}</Link>
+                  <Link key={link.href} href={link.href} aria-current={current(link.href)} onClick={close}>{link.label}</Link>
                 ))}
               </div>
             )}
           </div>
-          <Link href="/news/" onClick={close}>News and Alerts</Link>
+          <Link href="/news/" aria-current={current("/news/")} onClick={close}>News and Alerts</Link>
         </nav>
       </div>
     </header>

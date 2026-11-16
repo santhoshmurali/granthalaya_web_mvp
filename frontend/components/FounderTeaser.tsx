@@ -12,7 +12,6 @@ export default function FounderTeaser() {
     <section className="section founder-teaser" aria-labelledby="founder-heading">
       {data.images[0] && <img src={mediaUrl(data.images[0])} alt={data.title} />}
       <div>
-        <p className="eyebrow">The Founder</p>
         <h2 id="founder-heading">{data.title}</h2>
         <p>{data.summary}</p>
         <Link className="text-link" href="/about/founder/">Read more about the founder <ArrowRight size={16} aria-hidden /></Link>
