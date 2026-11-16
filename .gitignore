@@ -1,0 +1,14 @@
+Tasktrackr.md
+.env
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+frontend/.next/
+frontend/out/
+backend/data/
+test/node_modules/
+test/.browsers/
+test/test-results/
+test/playwright-report/
+.agents/
