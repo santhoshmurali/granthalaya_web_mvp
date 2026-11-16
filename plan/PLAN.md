@@ -82,4 +82,4 @@ granthalaya_about/
 - [x] Content manager at /admin/: news/alerts, shrines (add/edit/delete, image replace/add/remove), pages (home highlight, about, founder).
 - [x] 21 Playwright tests pass against a local server and against the Docker + Postgres stack, including 375/768/1024/1440 overflow checks, reduced motion and keyboard focus.
 - [x] Dockerfile, docker-compose.yml (app + Postgres), scripts/start_mac.sh, stop_mac.sh, .env.example, test/docker-compose.test.yml. Build, run, restart persistence verified.
-- [ ] Not done: project-level install of the image-enhancer, frontend-design and ui-ux-pro-max skills (install command was blocked in the session). Design follows the plan's palette, effects, anti-pattern and checklist guidance directly; source images are used unmodified.
+- [x] Skills installed at project level (.claude/skills, .agents/skills): frontend-design, image-enhancer, ui-ux-pro-max. The UI was built from the plan's own design guidance before they were installed; source images are used unmodified.

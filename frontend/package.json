@@ -1,0 +1,25 @@
+{
+  "name": "granthalaya-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "next build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fontsource/hind": "^5.3.0",
+    "@fontsource/marcellus": "^5.3.0",
+    "lucide-react": "^1.73.0",
+    "next": "^16.4.6",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}
